@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Plyz turns festival downtime into high-impact brand activations. Instant prizes, live leaderboards, and real leads from every event.">
+<title>Plyz — Brand Activation for Live Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;900&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --black:       #050505;
+  --surface:     #0c0c0c;
+  --card:        #111111;
+  --card-hover:  #161616;
+  --border:      rgba(255,255,255,0.06);
+  --border-mid:  rgba(255,255,255,0.12);
+  --white:       #f0f0ec;
+  --white-60:    rgba(240,240,236,0.6);
+  --white-25:    rgba(240,240,236,0.25);
+  --white-10:    rgba(240,240,236,0.1);
+  --green:       #00c060;
+  --green-dim:   rgba(0,192,96,0.12);
+  --green-faint: rgba(0,192,96,0.05);
+  --display:     'Roboto Condensed', sans-serif;
+  --body:        'Epilogue', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--body);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events:none;
+  z-index:0;
+}
+
+.wrap {
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 40px;
+  position:relative;
+  z-index:1;
+}
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0;
+  z-index:200;
+  border-bottom:1px solid var(--border);
+  background:rgba(5,5,5,0.92);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+}
+.nav-inner {
+  max-width:1180px; margin:0 auto; padding:0 40px;
+  height:64px; display:flex; align-items:center; justify-content:space-between;
+}
+.logo {
+  font-family:var(--display); font-weight:900; font-size:20px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--white); text-decoration:none;
+}
+.logo-slash { color:var(--green); }
+.nav-right { display:flex; align-items:center; gap:32px; }
+.nav-link {
+  font-size:13px; font-weight:400; color:var(--white-60);
+  text-decoration:none; letter-spacing:0.04em; transition:color 0.2s;
+}
+.nav-link:hover { color:var(--white); }
+.nav-btn {
+  font-family:var(--body); font-size:13px; font-weight:500;
+  letter-spacing:0.06em; color:var(--black); background:var(--green);
+  padding:10px 22px; border-radius:2px; text-decoration:none; transition:opacity 0.2s;
+}
+.nav-btn:hover { opacity:0.85; }
+
+/* HERO */
+.hero {
+  min-height:100vh; display:flex; flex-direction:column;
+  justify-content:center; padding:120px 0 80px;
+  position:relative; overflow:hidden;
+}
+.hero-ambient {
+  position:absolute; top:-10%; right:-5%;
+  width:700px; height:700px;
+  background:radial-gradient(circle at 60% 40%, rgba(0,192,96,0.07) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero-eyebrow {
+  display:flex; align-items:center; gap:14px; margin-bottom:32px;
+  opacity:0; animation:up 0.7s ease 0.1s forwards;
+}
+.eyebrow-slash { display:block; width:3px; height:20px; background:var(--green); border-radius:1px; }
+.eyebrow-text {
+  font-size:12px; font-weight:500; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--green);
+}
+.hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.hero h1 {
+  font-family:var(--display); font-weight:900;
+  font-size:clamp(72px, 10vw, 136px); line-height:0.9;
+  letter-spacing:-0.01em; text-transform:uppercase;
+  opacity:0; animation:up 0.8s ease 0.25s forwards;
+}
+.line-ghost { display:block; -webkit-text-stroke:1px rgba(240,240,236,0.2); color:transparent; }
+.line-green { display:block; color:var(--green); }
+.line-white { display:block; color:var(--white); }
+
+.hero-right { opacity:0; animation:up 0.8s ease 0.45s forwards; }
+.hero-desc {
+  font-size:18px; font-weight:300; color:var(--white-60);
+  line-height:1.75; max-width:420px; margin-bottom:44px;
+}
+.hero-cta {
+  display:inline-flex; align-items:center; gap:12px;
+  background:var(--green); color:var(--black);
+  font-family:var(--body); font-size:15px; font-weight:500;
+  letter-spacing:0.04em; padding:18px 36px; border-radius:2px;
+  text-decoration:none; transition:opacity 0.2s, transform 0.2s;
+}
+.hero-cta:hover { opacity:0.88; transform:translateY(-2px); }
+.hero-cta svg { width:16px; height:16px; }
+
+.hero-divider {
+  margin-top:80px; padding-top:56px; border-top:1px solid var(--border);
+  display:grid; grid-template-columns:repeat(3,1fr);
+  opacity:0; animation:up 0.8s ease 0.65s forwards;
+}
+.hero-stat { padding:0 40px; border-right:1px solid var(--border); }
+.hero-stat:first-child { padding-left:0; }
+.hero-stat:last-child { border-right:none; }
+.stat-val {
+  font-family:var(--display); font-weight:900; font-size:48px;
+  line-height:1; color:var(--white); letter-spacing:-0.02em; margin-bottom:8px;
+}
+.stat-val em { font-style:normal; color:var(--green); }
+.stat-desc { font-size:14px; color:var(--white-60); line-height:1.5; font-weight:300; }
+
+/* TICKER */
+.ticker {
+  overflow:hidden; border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  background:var(--surface); padding:14px 0; position:relative; z-index:1;
+}
+.ticker-track { display:flex; width:max-content; animation:tick 28s linear infinite; }
+.tick-item {
+  display:flex; align-items:center; gap:14px; padding:0 36px;
+  font-family:var(--display); font-weight:700; font-size:13px;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--white-25); white-space:nowrap;
+}
+.tick-slash { color:var(--green); font-size:16px; line-height:1; }
+@keyframes tick { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+/* SECTION BASE */
+section { position:relative; z-index:1; }
+.section-label {
+  display:flex; align-items:center; gap:12px;
+  font-size:12px; font-weight:500; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--green); margin-bottom:24px;
+}
+.sl { display:block; width:3px; height:16px; background:var(--green); border-radius:1px; }
+.section-title {
+  font-family:var(--display); font-weight:900;
+  font-size:clamp(44px,5.5vw,72px); line-height:0.95;
+  letter-spacing:-0.01em; text-transform:uppercase;
+}
+.section-title em { font-style:normal; color:var(--green); }
+.section-body { font-size:16px; color:var(--white-60); max-width:460px; margin-top:20px; line-height:1.75; font-weight:300; }
+
+/* DOWNTIME */
+.downtime { padding:120px 0; }
+.downtime-layout { display:grid; grid-template-columns:5fr 7fr; gap:100px; align-items:start; }
+.dt-item {
+  display:grid; grid-template-columns:56px 1fr; gap:20px;
+  align-items:start; padding:32px 0; border-bottom:1px solid var(--border);
+}
+.dt-item:first-child { border-top:1px solid var(--border); }
+.dt-num { font-family:var(--display); font-weight:900; font-size:13px; letter-spacing:0.1em; color:var(--green); padding-top:3px; }
+.dt-body strong {
+  display:block; font-family:var(--display); font-weight:700; font-size:19px;
+  letter-spacing:0.03em; text-transform:uppercase; margin-bottom:6px; color:var(--white);
+}
+.dt-body p { font-size:14px; color:var(--white-60); line-height:1.65; }
+
+/* HOW */
+.how { padding:120px 0; background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.steps-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:64px; }
+.step-card {
+  background:var(--card); padding:40px 32px; position:relative;
+  overflow:hidden; transition:background 0.3s;
+}
+.step-card:hover { background:var(--card-hover); }
+.step-card::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--border-mid); transition:background 0.3s;
+}
+.step-card:hover::after { background:var(--green); }
+.step-icon {
+  width:48px; height:48px; display:flex; align-items:center; justify-content:center;
+  background:var(--green-faint); border:1px solid rgba(0,192,96,0.2);
+  border-radius:2px; margin-bottom:28px; transition:background 0.3s, border-color 0.3s;
+}
+.step-card:hover .step-icon { background:var(--green-dim); border-color:rgba(0,192,96,0.5); }
+.step-icon svg { width:22px; height:22px; stroke:var(--green); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.step-n { font-family:var(--display); font-weight:900; font-size:64px; line-height:1; color:var(--white-10); letter-spacing:-0.02em; position:absolute; bottom:24px; right:24px; }
+.step-card h3 { font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:12px; }
+.step-card p { font-size:14px; color:var(--white-60); line-height:1.65; position:relative; z-index:1; }
+
+/* VALUE */
+.value { padding:120px 0; }
+.value-layout { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:64px; }
+.value-card { background:var(--card); padding:52px 44px; position:relative; overflow:hidden; transition:background 0.3s; }
+.value-card:hover { background:var(--card-hover); }
+.value-card.featured {
+  background:var(--green); grid-column:span 2;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+.value-icon {
+  width:52px; height:52px; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--border-mid); border-radius:2px; margin-bottom:28px; transition:border-color 0.3s;
+}
+.value-card:not(.featured):hover .value-icon { border-color:var(--green); }
+.value-icon svg { width:24px; height:24px; stroke:var(--white-60); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; transition:stroke 0.3s; }
+.value-card:not(.featured):hover .value-icon svg { stroke:var(--green); }
+.value-card.featured .value-icon { background:rgba(0,0,0,0.15); border-color:rgba(0,0,0,0.2); }
+.value-card.featured .value-icon svg { stroke:var(--black); }
+.value-card h3 { font-family:var(--display); font-weight:700; font-size:22px; letter-spacing:0.03em; text-transform:uppercase; margin-bottom:14px; }
+.value-card.featured h3 { color:var(--black); font-size:26px; }
+.value-card p { font-size:15px; color:var(--white-60); line-height:1.7; }
+.value-card.featured p { color:rgba(0,0,0,0.6); font-size:16px; }
+.featured-right { display:flex; flex-direction:column; gap:16px; }
+.featured-pill {
+  display:flex; align-items:center; gap:12px;
+  background:rgba(0,0,0,0.12); padding:14px 18px; border-radius:2px;
+}
+.featured-pill svg { width:18px; height:18px; stroke:var(--black); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.featured-pill span { font-size:14px; color:rgba(0,0,0,0.7); font-weight:400; }
+
+/* LEADERBOARD */
+.highlight { padding:120px 0; background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.highlight-layout { display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:center; }
+.highlight-visual { background:var(--card); border:1px solid var(--border-mid); border-radius:4px; overflow:hidden; }
+.lb-header {
+  background:var(--green); padding:18px 24px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.lb-header-title { font-family:var(--display); font-weight:700; font-size:14px; letter-spacing:0.1em; text-transform:uppercase; color:var(--black); }
+.lb-live { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:500; color:var(--black); letter-spacing:0.08em; text-transform:uppercase; }
+.lb-dot { width:6px; height:6px; border-radius:50%; background:var(--black); animation:pulse 1.4s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.lb-row {
+  display:grid; grid-template-columns:36px 1fr auto; align-items:center;
+  gap:16px; padding:16px 24px; border-bottom:1px solid var(--border); transition:background 0.2s;
+}
+.lb-row:hover { background:rgba(0,192,96,0.04); }
+.lb-row:last-child { border-bottom:none; }
+.lb-rank { font-family:var(--display); font-weight:700; font-size:15px; color:var(--white-25); }
+.lb-row.top .lb-rank { color:var(--green); }
+.lb-name { font-size:14px; font-weight:400; color:var(--white); }
+.lb-score { font-family:var(--display); font-weight:700; font-size:18px; color:var(--white); letter-spacing:-0.01em; }
+.lb-row.top .lb-score { color:var(--green); }
+.lb-prize { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--green); background:var(--green-dim); border:1px solid rgba(0,192,96,0.2); padding:3px 8px; border-radius:2px; margin-top:2px; display:inline-block; }
+.lb-name-sub { display:flex; flex-direction:column; }
+
+/* RESULTS */
+.results { background:var(--black); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 0; }
+.results-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+.result-cell { background:var(--card); padding:44px 36px; transition:background 0.3s; }
+.result-cell:hover { background:var(--card-hover); }
+.result-val { font-family:var(--display); font-weight:900; font-size:52px; line-height:1; color:var(--green); letter-spacing:-0.02em; margin-bottom:10px; }
+.result-label { font-size:14px; color:var(--white-60); line-height:1.5; font-weight:300; }
+
+/* CASES */
+.cases { padding:120px 0; }
+.cases-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:64px; }
+.case-card { background:var(--card); padding:48px 36px; position:relative; overflow:hidden; transition:background 0.3s; }
+.case-card:hover { background:var(--card-hover); }
+.case-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg, var(--green), transparent); opacity:0; transition:opacity 0.3s; }
+.case-card:hover::before { opacity:1; }
+.case-tag { display:inline-block; font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--green); border:1px solid rgba(0,192,96,0.25); background:var(--green-faint); padding:4px 10px; border-radius:2px; margin-bottom:28px; }
+.case-icon { margin-bottom:28px; }
+.case-icon svg { width:36px; height:36px; stroke:var(--white-25); fill:none; stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; transition:stroke 0.3s; }
+.case-card:hover .case-icon svg { stroke:var(--green); }
+.case-card h3 { font-family:var(--display); font-weight:700; font-size:24px; letter-spacing:0.03em; text-transform:uppercase; margin-bottom:14px; line-height:1.1; }
+.case-card p { font-size:14px; color:var(--white-60); line-height:1.7; }
+
+/* CTA */
+.cta-sec { padding:140px 0; text-align:center; position:relative; overflow:hidden; }
+.cta-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:900px; height:500px; background:radial-gradient(ellipse, rgba(0,192,96,0.08) 0%, transparent 70%); pointer-events:none; }
+.cta-sec .section-label { justify-content:center; }
+.cta-sec .sl { display:none; }
+.cta-title { font-family:var(--display); font-weight:900; font-size:clamp(56px,8vw,104px); line-height:0.92; letter-spacing:-0.01em; text-transform:uppercase; margin:0 auto 32px; max-width:800px; }
+.cta-title em { font-style:normal; color:var(--green); }
+.cta-body { font-size:18px; color:var(--white-60); max-width:440px; margin:0 auto 52px; line-height:1.75; font-weight:300; }
+.cta-btn { display:inline-flex; align-items:center; gap:12px; background:var(--green); color:var(--black); font-family:var(--body); font-size:16px; font-weight:500; letter-spacing:0.04em; padding:20px 44px; border-radius:2px; text-decoration:none; transition:opacity 0.2s, transform 0.2s; }
+.cta-btn:hover { opacity:0.88; transform:translateY(-2px); }
+.cta-btn svg { width:18px; height:18px; }
+
+/* FOOTER */
+footer { border-top:1px solid var(--border); padding:44px 0; position:relative; z-index:1; }
+.footer-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.footer-logo { font-family:var(--display); font-weight:900; font-size:16px; letter-spacing:0.12em; text-transform:uppercase; color:var(--white-25); text-decoration:none; }
+.footer-logo span { color:var(--green); }
+.footer-copy { font-size:12px; color:var(--white-25); letter-spacing:0.04em; }
+.footer-contact { font-size:13px; color:var(--white-60); text-decoration:none; letter-spacing:0.04em; transition:color 0.2s; }
+.footer-contact:hover { color:var(--green); }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.65s ease, transform 0.65s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+.d1 { transition-delay:0.08s; }
+.d2 { transition-delay:0.16s; }
+.d3 { transition-delay:0.24s; }
+.d4 { transition-delay:0.32s; }
+
+@keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+/* RESPONSIVE */
+@media (max-width:960px) {
+  .nav-right .nav-link { display:none; }
+  .hero-grid { grid-template-columns:1fr; gap:48px; }
+  .hero-divider { grid-template-columns:1fr 1fr; }
+  .downtime-layout { grid-template-columns:1fr; gap:56px; }
+  .steps-row { grid-template-columns:1fr 1fr; }
+  .value-layout { grid-template-columns:1fr; }
+  .value-card.featured { grid-column:span 1; grid-template-columns:1fr; gap:32px; }
+  .results-grid { grid-template-columns:1fr 1fr; }
+  .cases-grid { grid-template-columns:1fr; }
+  .highlight-layout { grid-template-columns:1fr; gap:56px; }
+}
+@media (max-width:600px) {
+  .wrap { padding:0 20px; }
+  .nav-inner { padding:0 20px; }
+  .steps-row { grid-template-columns:1fr; }
+  .results-grid { grid-template-columns:1fr; }
+  .hero-divider { grid-template-columns:1fr; }
+  .hero-stat { border-right:none; padding:0 0 24px; border-bottom:1px solid var(--border); }
+  .hero-stat:last-child { border-bottom:none; }
+  .hero-stat:nth-child(2) { padding-left:0; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Plyz<span class="logo-slash">.</span></a>
+    <div class="nav-right">
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#cases" class="nav-link">Use cases</a>
+      <a href="https://plyz.app" class="nav-link" target="_blank" rel="noopener">plyz.app</a>
+      <a href="mailto:contact@plyzapp.com" class="nav-btn">Get in touch</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ambient"></div>
+  <div class="wrap">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-slash"></span>
+      <span class="eyebrow-text">Gamified Brand Activation</span>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <h1>
+          <span class="line-white">Every</span>
+          <span class="line-green">crowd</span>
+          <span class="line-white">needs</span>
+          <span class="line-ghost">a game.</span>
+        </h1>
+      </div>
+      <div class="hero-right">
+        <p class="hero-desc">
+          Plyz transforms the dead moments of any live event — the queue, the set break, the halftime — into branded experiences that reward your audience and grow your pipeline.
+        </p>
+        <a href="mailto:contact@plyzapp.com" class="hero-cta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Talk to us
+        </a>
+      </div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-stat">
+        <div class="stat-val">Zero<em>.</em></div>
+        <div class="stat-desc">App installs required. Players scan and play instantly.</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-val">Live<em>.</em></div>
+        <div class="stat-desc">Leaderboards and prizes updated in real time throughout the event.</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-val">Yours<em>.</em></div>
+        <div class="stat-desc">Every lead, every play, every data point goes directly to your brand.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="tick-item"><span class="tick-slash">/</span>Music Festivals</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Sports Events</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Queue Activation</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Instant Prizes</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Live Leaderboards</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Brand Campaigns</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Lead Generation</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Halftime Breaks</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Set Breaks</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Music Festivals</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Sports Events</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Queue Activation</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Instant Prizes</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Live Leaderboards</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Brand Campaigns</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Lead Generation</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Halftime Breaks</span>
+    <span class="tick-item"><span class="tick-slash">/</span>Set Breaks</span>
+  </div>
+</div>
+
+<!-- DOWNTIME -->
+<section class="downtime">
+  <div class="wrap">
+    <div class="downtime-layout">
+      <div class="reveal">
+        <div class="section-label"><span class="sl"></span>The opportunity</div>
+        <h2 class="section-title">Downtime<br>is <em>prime</em><br>time.</h2>
+        <p class="section-body">Live events are packed with moments where audiences have nothing to do but stare at their phones. Plyz gives brands a way to own those moments — with games people genuinely want to play.</p>
+      </div>
+      <div class="reveal d1">
+        <div class="dt-item">
+          <div class="dt-num">01</div>
+          <div class="dt-body">
+            <strong>Queue Lines</strong>
+            <p>Festival queues last 20 to 40 minutes. An audience standing still, phone in hand, with nowhere to be. The perfect moment to put your brand in play.</p>
+          </div>
+        </div>
+        <div class="dt-item">
+          <div class="dt-num">02</div>
+          <div class="dt-body">
+            <strong>Set Breaks</strong>
+            <p>Between artists, the crowd has energy and no outlet. A live leaderboard with prizes keeps the momentum — and your brand — front and centre.</p>
+          </div>
+        </div>
+        <div class="dt-item">
+          <div class="dt-num">03</div>
+          <div class="dt-body">
+            <strong>Halftime &amp; Intervals</strong>
+            <p>Sports halftimes, theatre intervals, conference breaks. Wherever people pause, Plyz turns the gap into a brand conversation with a prize at the end.</p>
+          </div>
+        </div>
+        <div class="dt-item">
+          <div class="dt-num">04</div>
+          <div class="dt-body">
+            <strong>Brand Stands</strong>
+            <p>Give your stand a reason to draw a crowd. A competitive game with instant prizes creates a queue of its own — and a lead list to match.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label"><span class="sl"></span>How it works</div>
+      <h2 class="section-title">Scan.<br><em>Play.</em> Win.</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step-card reveal d1">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <h3>Place a QR</h3>
+        <p>Your brand launches a campaign and places a QR code anywhere at the venue — screens, banners, wristbands, or staff shirts.</p>
+        <div class="step-n">01</div>
+      </div>
+      <div class="step-card reveal d2">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <h3>Play Instantly</h3>
+        <p>Players scan and the game opens immediately in their browser. No download, no account, no friction — even in a crowded festival signal.</p>
+        <div class="step-n">02</div>
+      </div>
+      <div class="step-card reveal d3">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+        <h3>Win a Prize</h3>
+        <p>Prize codes appear on screen the moment the game ends. No email, no wait. Players show the code at your stand and claim on the spot.</p>
+        <div class="step-n">03</div>
+      </div>
+      <div class="step-card reveal d4">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>Brand Gets Leads</h3>
+        <p>Every play captures a qualified, consent-based lead. Name, email, and play data — delivered to your dashboard as the event happens.</p>
+        <div class="step-n">04</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE PROPS -->
+<section class="value">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label"><span class="sl"></span>Why Plyz</div>
+      <h2 class="section-title">Built for<br><em>live.</em></h2>
+      <p class="section-body">Designed for real-world event conditions — crowded venues, competitive audiences, and brands that need results they can measure.</p>
+    </div>
+    <div class="value-layout">
+      <div class="value-card featured reveal">
+        <div>
+          <div class="value-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <h3>Live Leaderboards with Prizes</h3>
+          <p>Real-time competitive rankings keep your audience engaged from first scan to final whistle. Prize tiers reward the top players and drive repeat play throughout the break.</p>
+        </div>
+        <div class="featured-right">
+          <div class="featured-pill">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Rankings update live as players submit their score</span>
+          </div>
+          <div class="featured-pill">
+            <svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            <span>Prize codes delivered on screen, instantly</span>
+          </div>
+          <div class="featured-pill">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Competition drives replay — more plays, more leads</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="value-card reveal d1">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <h3>Zero Friction Entry</h3>
+        <p>One QR code. No app download. Players are inside the game within seconds of scanning — the lowest possible barrier for a crowd that has other things on its mind.</p>
+      </div>
+
+      <div class="value-card reveal d2">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Reliable at Any Scale</h3>
+        <p>Plyz is engineered for the demands of live events — thousands of players, congested networks, peak crowd moments. Your campaign performs when it matters most.</p>
+      </div>
+
+      <div class="value-card reveal d1">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+        <h3>Your Brand, Your Game</h3>
+        <p>Every game is white-labelled to your identity — your colours, your logo, your prizes. Players never see Plyz. They see your brand at its best.</p>
+      </div>
+
+      <div class="value-card reveal d2">
+        <div class="value-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>Real Leads, Real Data</h3>
+        <p>Every play is a qualified, consent-based lead. Know who played, their score, and how to reach them — all delivered to your dashboard as it happens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERBOARD PREVIEW -->
+<section class="highlight">
+  <div class="wrap">
+    <div class="highlight-layout">
+      <div class="reveal">
+        <div class="section-label"><span class="sl"></span>Live leaderboards</div>
+        <h2 class="section-title">Competition<br>drives <em>plays.</em><br>Plays drive<br><em>leads.</em></h2>
+        <p class="section-body" style="margin-top:24px">The leaderboard is not just a scoreboard. It is the engine that makes people play again. Seeing their name one place below the prize tier is the most powerful call to action at any event.</p>
+      </div>
+      <div class="highlight-visual reveal d2">
+        <div class="lb-header">
+          <span class="lb-header-title">Live Rankings</span>
+          <span class="lb-live"><span class="lb-dot"></span>Live now</span>
+        </div>
+        <div class="lb-row top">
+          <div class="lb-rank">1</div>
+          <div class="lb-name-sub"><span class="lb-name">Sarah M.</span><span class="lb-prize">Free drink</span></div>
+          <div class="lb-score">9,840</div>
+        </div>
+        <div class="lb-row top">
+          <div class="lb-rank">2</div>
+          <div class="lb-name-sub"><span class="lb-name">James K.</span><span class="lb-prize">Free drink</span></div>
+          <div class="lb-score">8,210</div>
+        </div>
+        <div class="lb-row top">
+          <div class="lb-rank">3</div>
+          <div class="lb-name-sub"><span class="lb-name">Priya R.</span><span class="lb-prize">Free drink</span></div>
+          <div class="lb-score">7,560</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank">4</div>
+          <div class="lb-name">Tom W.</div>
+          <div class="lb-score">6,990</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank">5</div>
+          <div class="lb-name">Claudia F.</div>
+          <div class="lb-score">5,340</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank">6</div>
+          <div class="lb-name">Marco D.</div>
+          <div class="lb-score">4,870</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS BAND -->
+<section class="results">
+  <div class="wrap">
+    <div class="results-grid">
+      <div class="result-cell reveal">
+        <div class="result-val">Instant</div>
+        <div class="result-label">Prize delivery — on screen, the moment the game ends</div>
+      </div>
+      <div class="result-cell reveal d1">
+        <div class="result-val">5,000+</div>
+        <div class="result-label">Concurrent players supported per campaign</div>
+      </div>
+      <div class="result-cell reveal d2">
+        <div class="result-val">100%</div>
+        <div class="result-label">White-label — your brand, your colours, your prizes</div>
+      </div>
+      <div class="result-cell reveal d3">
+        <div class="result-val">Zero</div>
+        <div class="result-label">App download required — players scan and play immediately</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="cases" id="cases">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-label"><span class="sl"></span>Where Plyz works</div>
+      <h2 class="section-title">Every crowd.<br><em>Every</em> break.</h2>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card reveal d1">
+        <div class="case-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <div class="case-tag">Music</div>
+        <h3>Festivals &amp; Concerts</h3>
+        <p>Between headliners, thousands of attendees have 30 minutes and a phone in their hand. Plyz turns that gap into a branded competition — with a prize waiting at your stand.</p>
+      </div>
+      <div class="case-card reveal d2">
+        <div class="case-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></div>
+        <div class="case-tag">Sports</div>
+        <h3>Halftime &amp; Intervals</h3>
+        <p>A stadium at halftime is thousands of competitive people with nowhere to go. Put your brand on the big screen and let the leaderboard do the work.</p>
+      </div>
+      <div class="case-card reveal d3">
+        <div class="case-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="case-tag">Retail &amp; Brand</div>
+        <h3>Brand Stands &amp; Queues</h3>
+        <p>A game with real prizes creates a queue of its own. Turn your activation stand into the most popular spot at the event and walk away with a lead list to match.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-glow"></div>
+  <div class="wrap">
+    <div class="section-label reveal"><span class="sl"></span>Get started</div>
+    <h2 class="cta-title reveal">Your next<br>event is a<br><em>campaign.</em></h2>
+    <p class="cta-body reveal">Tell us about your event. We will build your game, set your prizes, and have everything ready before doors open.</p>
+    <div class="reveal">
+      <a href="mailto:contact@plyzapp.com" class="cta-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        contact@plyzapp.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <a href="#" class="footer-logo">Plyz<span>.</span></a>
+      <span class="footer-copy">plyzapp.com &mdash; 2026</span>
+      <a href="mailto:contact@plyzapp.com" class="footer-contact">contact@plyzapp.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = scrollY > 10 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)';
+  });
+</script>
+</body>
+</html>
